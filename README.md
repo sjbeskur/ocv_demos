@@ -34,12 +34,21 @@ cargo build
 
 ## Examples
 ### Image Filtering Example
-This is more an example of Rusts powerful lambda capabilites used to select pixels above a giventhreshold in an image.
+This is more an example of Rusts powerful lambda capabilites used to select pixels above a given threshold in an image.
+
+```
+cargo run -- filter -f <image_file> -t <threshold_u8>
+```
 
 
 
-### Finding Centroid Example
+### Finding Centroid / Blobs Example
 This example is a Rust port of the following example on [learnopencv.com](https://learnopencv.com/find-center-of-blob-centroid-using-opencv-cpp-python/)
+
+```
+cargo run -- centroid -f <image_file>
+```
+
 
 
 
