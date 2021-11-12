@@ -46,7 +46,7 @@ pub fn show_centriods(file: &str) -> Result<()> {
 
 
 
-
+#[allow(dead_code)]
 pub fn single_centriod(gray_image: &mut opencv::prelude::Mat) -> Result<()>{
 
     //https://learnopencv.com/find-center-of-blob-centroid-using-opencv-cpp-python/
@@ -56,13 +56,13 @@ pub fn single_centriod(gray_image: &mut opencv::prelude::Mat) -> Result<()>{
 
     //convert gs to binary image    
     let moments = imgproc::moments(&thresh_img, true)?;
-    println!("moment: {:?}", moments);
+    trace!("moment: {:?}", moments);
     let m10 = moments.m10 as i32;
     let m01 = moments.m01 as i32;
     let m00 = moments.m00 as i32;
     let center_point = Point::new(m10/ m00, m01 / m00);
 
-    println!("coords of centroid: {:?}", center_point);
+    trace!("coords of centroid: {:?}", center_point);
     
     let radius = 40;
     let color = Scalar::new(64.0, 64.0, 0.0, 0.0);
@@ -71,7 +71,7 @@ pub fn single_centriod(gray_image: &mut opencv::prelude::Mat) -> Result<()>{
     let shift = 0;
     imgproc::circle(gray_image, center_point, radius, color, thickness, line_type, shift)?;
 
-    println!("point from moments: {:?}",  center_point);
+    trace!("point from moments: {:?}",  center_point);
 
     Ok(())
 
@@ -86,16 +86,16 @@ pub fn locate_centriods(gray_image: &opencv::prelude::Mat) -> Result<Mat, Box<dy
     let anchor = Point::new(-1,-1);
     imgproc::blur(&gray_image, &mut blured, ksize, anchor, opencv::core::BORDER_DEFAULT )?;
     
-//    println!("[canny] Running canny Edge Detection.");
+    info!("[canny] Running canny Edge Detection.");
     imgproc::canny(&blured, &mut canny_output , 50.0, 150.0, 3, false)?;
     
-//    println!("[contours] Finding contours...");
+    info!("[contours] Finding contours...");
     let simple = imgproc::CHAIN_APPROX_SIMPLE;
     //let none = imgproc::CHAIN_APPROX_NONE;
     //let tc89_kcos = imgproc::CHAIN_APPROX_TC89_KCOS;
     //let l_one = imgproc::CHAIN_APPROX_TC89_L1;    
     imgproc::find_contours(&canny_output, &mut contours, imgproc::RETR_TREE, simple , Point::new(0,0))?;
-//    println!("Contours found detected: {}.", contours.to_vec().len());
+    info!("Contours found detected: {}.", contours.to_vec().len());
 
     // [moments] Get moments;
     let mut mu: Vec<Moments> =  Vec::new();     

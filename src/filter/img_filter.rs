@@ -25,9 +25,10 @@ pub fn filter(img: &Mat, threshold: u8) -> Result<()>{
     let read_ms = now.elapsed().as_millis();
 
     now = Instant::now();
-    threshold_filter(&buffer, threshold);
+    let rslt = threshold_filter(&buffer, threshold);
     let filter_ms = now.elapsed().as_millis();
     
+    println!("Filtered image bytes: {}", rslt.len());    
     println!("Image buffer size: {:?} bytes", buffer.len());
     println!("Image read time: {}(millis)", read_ms);  
     println!("Image filter time: {}(millis)", filter_ms);  
@@ -35,7 +36,7 @@ pub fn filter(img: &Mat, threshold: u8) -> Result<()>{
 }
 
 
-fn threshold_filter(bytes: &Vector<u8>, threshold: u8){
+fn threshold_filter(bytes: &Vector<u8>, threshold: u8) -> Vec<(usize,u8)>{
   
     // filter the image u8 pixels and retrieve only the index and values 
     // where the values are greater than threshold
@@ -44,5 +45,7 @@ fn threshold_filter(bytes: &Vector<u8>, threshold: u8){
                     .filter(|&(_,val)| val > threshold)
                     .map(|(index,val)| (index, val))
                     .collect();
-    println!("Filtered image bytes: {}", iv.len());
+    
+    trace!("Filtered image bytes: {}", iv.len());    
+    iv
 }
