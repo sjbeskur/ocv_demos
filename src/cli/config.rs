@@ -1,115 +1,93 @@
-use app::{App, Cmd, Opt, }; //Args, OptTypo, OptValue, OptValueParse};
+use std::process;
+use clap::{Arg, ArgMatches, App, SubCommand};
+//use app::{App, Cmd, Opt, }; //Args, OptTypo, OptValue, OptValueParse};
 
+/*  not needed for now but might re-introduce later
 #[derive(Debug, Default)]
 pub struct Config{
-    filter: FilterImg,
-    centroid: CentriodCmd,
+    verbose: u8,
 }
+*/
 
+pub fn parse(){
+    //let mut config = Config::default();
 
-impl Config {
+    let matches = App::new("rust_cv")
+        .version("1.0.0")
+        .arg(
+            Arg::with_name("verbose")
+            .short("v")
+            .long("verbose")
+            .multiple(true)
+            .help("Set level of logging verbosity")
+        )
+        .subcommand(SubCommand::with_name("filter")
+            .about("Filter input image  by threshold u8 amount")
+            .arg(Arg::with_name("file")
+                .short("f")
+                .long("file")
+                .required(true)
+                .takes_value(true)
+                .help("Image file to filter")
+            )
+            .arg(Arg::with_name("threshold")
+                .short("t")
+                .long("threshold")
+                .required(false)
+                .takes_value(true)
+                .default_value("128")
+                .help("Set threshold value to filter upon")
+            )
+        )   
+        .subcommand(SubCommand::with_name("centroid")
+            .about("Show centroids of input image")
+            .arg(Arg::with_name("file")
+                .short("f")
+                .long("file")
+                .required(true)
+                .takes_value(true)
+                .help("Image file to target")
+            )
+        )   
+        .get_matches();
 
-
-    pub fn parse(){
-        //let mut thresh :i32 = 0;
-        let mut config = Config::default();
-
-        let helper = {
-            App::new("rust_cv")
-                .version("1.0.0")
-                .cmd(
-                    Cmd::new("filter")
-                    .short("f")
-                    .desc("filter input image")
-                    .opt(
-                        Opt::new("threshold", &mut config.filter.threshold )
-                        .short('t')
-                        .long("threshold")
-                        .optional()
-                        .help("seth threshold value")
-                    )
-                    .opt(
-                        Opt::new("fileName", &mut config.filter.file_name )
-                        .short('f')
-                        .long("fileName")
-                        .help("image file to filter")
-                    )                    
-                )
-                .cmd(
-                    Cmd::new("centroid")
-                    .short("c")
-                    .desc("show centroid of input image")
-                    .opt(
-                        Opt::new("fileName", &mut config.centroid.file_name )
-                        .short('f')
-                        .long("fileName")
-                        .help("image file to target")
-                    )                    
-                )
-
-                .parse_args()
-        };
-
-        if *helper.args_len() == 0 {
-            helper.help_exit(0);
-        }
-
-        config
-            .check_and_call(helper.current_cmd_str())
-            .map_err(|e| helper.help_cmd_err_exit(helper.current_cmd_ref(), e, 1))
-            .unwrap(); // map_err alrendy exit if it is err, so unwrap is safe.        
+    if let Err(e) = run(&matches){
+        println!("Application error: {}", e);
+        process::exit(1);
     }
 
-
-    fn check_and_call(self, cmd: Option<&str>) -> Result<(), String> {
-        println!("Match Cmd: {:?}", cmd);
-        match cmd {
-            Some("filter") => {
-                self.filter.check()?;
-            },
-            Some("centroid") => {
-                self.centroid.check()?;
-            }
-
-            _ => unreachable!(),
-        }
-        Ok(())
-    }    
- 
-}
-
-
-
-#[derive(Debug)]
-pub struct FilterImg {
-    pub threshold: u8, 
-    pub file_name: String,
+    process_subcommands(&matches);
 
 }
 
-impl FilterImg{
-    fn check(&self) -> Result<(), String> {
-        println!("Running Filter: threshold: {}, file: {}", self.threshold, self.file_name);
-        crate::filter::run_filter(&self.file_name,self.threshold).unwrap();
-        Ok(())
-    }
+fn run(matches: &ArgMatches) -> Result<(), String> {    
+    let min_log_level = match matches.occurrences_of("verbose") {
+        0 => "WARN",
+        1 => "INFO",
+        2 => "DEBUG",
+        3 | _ => "TRACE",
+    };
+    std::env::set_var("RUST_LOG", min_log_level);
+    env_logger::init();
+    Ok(())
 }
 
-impl Default for FilterImg{
-    fn default() -> Self{        
-        Self{ threshold: 128, file_name: "".to_owned() }
-    }
-} 
+pub fn process_subcommands(args: &ArgMatches){
 
-#[derive(Debug,Default)]
-pub struct CentriodCmd{
-    pub file_name: String,
-}
+    if let Some(config_matches) = args.subcommand_matches("filter"){
+        //commands::show_config::exec(&config_matches);
+        let t = config_matches.value_of("threshold").unwrap_or_default().parse().expect("t param missing");
+        let file = config_matches.value_of("file").expect("file param missing");
+        crate::filter::run_filter(&file, t).unwrap();
+        std::process::exit(0);
+    }   
 
-impl CentriodCmd{
-    fn check(&self) -> Result<(), String> {
-        println!("Running Filter: threshold: file: {}",self.file_name);
-        crate::centroid::show_centriods(&self.file_name).unwrap();
-        Ok(())
-    }
+    if let Some(config_matches) = args.subcommand_matches("centroid"){
+        //commands::show_config::exec(&config_matches);
+        let file = config_matches.value_of("file").expect("file param missing");
+        crate::centroid::show_centriods(&file).unwrap();
+        std::process::exit(0);
+    }   
+
+
 }

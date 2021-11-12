@@ -30,8 +30,8 @@ pub fn show_centriods(file: &str) -> Result<()> {
 
 //    highgui::imshow("single centroid", &img)?;
     highgui::wait_key(0)?;
-    opencv::highgui::imshow("mulit centroid", &rslt.unwrap())?;
-    opencv::highgui::wait_key(0)?;
+    highgui::imshow("mulit centroid", &rslt.unwrap())?;
+    highgui::wait_key(0)?;
 
     Ok(())
 
@@ -98,7 +98,7 @@ pub fn locate_centriods(gray_image: &opencv::prelude::Mat) -> Result<Mat, Box<dy
 //    println!("Contours found detected: {}.", contours.to_vec().len());
 
     // [moments] Get moments;
-    let mut mu: Vec<Moments> =  Vec::new(); 
+    let mut mu: Vec<Moments> =  Vec::new();     
     for c in contours.iter(){
         mu.push( imgproc::moments(&c, false)? );
     }
@@ -122,7 +122,6 @@ pub fn locate_centriods(gray_image: &opencv::prelude::Mat) -> Result<Mat, Box<dy
         let  _ = imgproc::draw_contours(&mut drawing, &contours, contour_idx , color, thickness, imgproc::LINE_AA, &opencv::core::no_array(), maxresult, zero_offset)?;
         let _ = imgproc::circle(&mut drawing, mc[i], 40, color, 3, 8, 0 )?;
     }
-
 
     Ok(drawing.clone())
 }

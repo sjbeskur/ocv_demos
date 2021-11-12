@@ -1,11 +1,15 @@
-extern crate app;
+#[macro_use] extern crate log;
+extern crate env_logger;
+extern crate clap;
 
 mod cli;
 mod centroid;
 mod filter;
 
 fn main() {
-    cli::Config::parse()
+    cli::parse();
+//    env_logger::init();
+
 }
 
 
