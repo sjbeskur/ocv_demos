@@ -7,8 +7,8 @@ mod centroid;
 mod filter;
 
 fn main() {
+    // Parses and executes the target subcommand (e.g filter, centriod)
     cli::parse();
-//    env_logger::init();
 
 }
 
