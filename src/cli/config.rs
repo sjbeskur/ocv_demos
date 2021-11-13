@@ -1,5 +1,5 @@
 use std::process;
-use clap::{Arg, ArgMatches, App, SubCommand};
+use clap::{ Arg, ArgMatches, App, SubCommand};
 //use app::{App, Cmd, Opt, }; //Args, OptTypo, OptValue, OptValueParse};
 
 /*  not needed for now but might re-introduce later
@@ -12,7 +12,7 @@ pub struct Config{
 pub fn parse(){
     //let mut config = Config::default();
 
-    let matches = App::new("rust_cv")
+    let matches = App::new("ocv_demo")
         .version("1.0.0")
         .arg(
             Arg::with_name("verbose")
