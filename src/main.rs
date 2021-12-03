@@ -5,6 +5,7 @@ extern crate clap;
 mod cli;
 mod centroid;
 mod filter;
+mod harris;
 
 fn main() {
     // Parses and executes the target subcommand (e.g filter, centriod)

@@ -49,6 +49,16 @@ pub fn parse(){
                 .help("Image file to target")
             )
         )   
+        .subcommand(SubCommand::with_name("harris")
+            .about("Detect corners using harris algorithm")
+            .arg(Arg::with_name("file")
+                .short("f")
+                .long("file")
+                .required(true)
+                .takes_value(true)
+                .help("Image file to target")
+            )
+        )   
         .get_matches();
 
     if let Err(e) = run(&matches){
@@ -86,6 +96,13 @@ pub fn process_subcommands(args: &ArgMatches){
         //commands::show_config::exec(&config_matches);
         let file = config_matches.value_of("file").expect("file param missing");
         crate::centroid::show_centriods(&file).unwrap();
+        std::process::exit(0);
+    }   
+
+    if let Some(config_matches) = args.subcommand_matches("harris"){
+        //commands::show_config::exec(&config_matches);
+        let file = config_matches.value_of("file").expect("file param missing");
+        crate::harris::show_corners(&file).unwrap();
         std::process::exit(0);
     }   
 
