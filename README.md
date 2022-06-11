@@ -54,7 +54,12 @@ cargo run -- centroid -f <image_file>
 
 ## Notes on Cross Compiling 
 e.g. aarch64-unknown-linux-gnu 
+### prerequisits
+```
+sudo apt-get install g++-aarch64-linux-gnu
+```
 
+### build (for aarch64)
 ```
 rustup target list
 rustup target add aarch64-unknown-linux-gnu 

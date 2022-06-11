@@ -6,6 +6,7 @@ mod cli;
 mod centroid;
 mod filter;
 mod harris;
+mod cameras;
 
 fn main() {
     // Parses and executes the target subcommand (e.g filter, centriod)
