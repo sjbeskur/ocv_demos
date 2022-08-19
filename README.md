@@ -65,3 +65,5 @@ rustup target list
 rustup target add aarch64-unknown-linux-gnu 
 cargo build --target aarch64-unknown-linux-gnu
 ```
+
+https://docs.opencv.org/4.x/d0/d76/tutorial_arm_crosscompile_with_cmake.html
