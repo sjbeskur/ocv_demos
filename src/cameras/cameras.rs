@@ -1,8 +1,11 @@
+
 #[derive(Debug)] 
 pub struct Camera{
     focal_length: f32,
 }
 
+
+#[allow(dead_code)]
 impl Camera {
      pub fn get_type() -> String{
          "default".to_string()

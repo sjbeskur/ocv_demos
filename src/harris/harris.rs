@@ -26,7 +26,7 @@ pub fn harris_corners(gray_image: &mut opencv::prelude::Mat, thresh: f32) -> Res
     let sz = gray_image.mat_size();
     let rows = gray_image.rows();
     let cols = gray_image.cols();
-    let dims = sz.dims();
+    let _dims = sz.dims();
     let mut dst = Mat::zeros(rows,cols,opencv::core::CV_32FC1)?.to_mat()?; 
     
     // Mat::new_rows_cols(rows,cols, opencv::core::CV_32FC1)?;

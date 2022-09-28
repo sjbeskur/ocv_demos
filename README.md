@@ -59,11 +59,41 @@ e.g. aarch64-unknown-linux-gnu
 sudo apt-get install g++-aarch64-linux-gnu
 ```
 
-### build (for aarch64)
+### Cross-Compile / Build (for aarch64)
+
+To cross-compile for aarch64 you will need to edit the following:
+~/.cargo/config
+
+```bash
+[target.aarch64-unknown-linux-gnu]
+linker = "aarch64-linux-gnu-gcc"
+
 ```
+
+
+```bash
 rustup target list
 rustup target add aarch64-unknown-linux-gnu 
 cargo build --target aarch64-unknown-linux-gnu
+
 ```
 
+### Cross-Compile / OpenCV (for aarch64)
+
+To cross-compile OpenCV for aarch64 you can do the following from the OpenCV source folder:
+
+```bash
+cmake -B build -S. \ 
+    -DCMAKE_BUILD_TYPE=RELEASE \
+    -DCMAKE_INSTALL_PREFIX=/usr/local \ -DOPENCV_GENERATE_PKGCONFIG=ON  \
+    -DCMAKE_TOOLCHAIN_FILE=../platforms/linux/aarch64-gnu.toolchain.cmake .. \
+    && cd build \
+    && make -j16 
+```
+
+
+
 https://docs.opencv.org/4.x/d0/d76/tutorial_arm_crosscompile_with_cmake.html
+
+https://jensd.be/1126/linux/cross-compiling-for-arm-or-aarch64-on-debian-or-ubuntu
+
