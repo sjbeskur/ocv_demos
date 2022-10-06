@@ -91,6 +91,25 @@ cmake -B build -S. \
     && make -j16 
 ```
 
+### Armv7 / armhf 
+
+sudo dpkg --add-architecture armhf
+
+~.cargo/config
+```
+[target.armv7-unknown-linux-gnueabihf]
+linker = "arm-linux-gnueabihf-gcc"
+```
+
+```
+rustup target add armv7-unknown-linux-gnueabihf
+cargo build --target armv7-unknown-linux-gnueabihf
+
+```
+
+
+
+
 
 
 https://docs.opencv.org/4.x/d0/d76/tutorial_arm_crosscompile_with_cmake.html
