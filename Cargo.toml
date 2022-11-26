@@ -10,10 +10,10 @@ edition = "2021"
 
 [dependencies]
 clap = "2.33"
-opencv = "0.68"
+opencv = "0.74"
 # opencv = {version = "0.57.0", default-features = false }
 log = "0.4"
-env_logger = "0.9"
+env_logger = "0.10"
 
 
 [profile.release]

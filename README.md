@@ -86,6 +86,8 @@ To cross-compile OpenCV for aarch64 you can do the following from the OpenCV sou
 cmake -B build -S. \ 
     -DCMAKE_BUILD_TYPE=RELEASE \
     -DCMAKE_INSTALL_PREFIX=/usr/local \ -DOPENCV_GENERATE_PKGCONFIG=ON  \
+    -DWITH_QT=OFF \
+    -DWITH_QT=ON \
     -DCMAKE_TOOLCHAIN_FILE=../platforms/linux/aarch64-gnu.toolchain.cmake .. \
     && cd build \
     && make -j16 
