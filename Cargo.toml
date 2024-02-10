@@ -6,18 +6,18 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 
- #arm-linux-gnueabihf-gcc"
+#arm-linux-gnueabihf-gcc"
 
 [dependencies]
 clap = "2.33"
-opencv = "0.74"
+opencv = "0.88.8"
 # opencv = {version = "0.57.0", default-features = false }
 log = "0.4"
 env_logger = "0.10"
 
 
 [profile.release]
-debug=true
+debug = true
 opt-level = 1
 #lto = true
 panic = 'unwind'
