@@ -83,7 +83,7 @@ cargo build --target aarch64-unknown-linux-gnu
 To cross-compile OpenCV for aarch64 you can do the following from the OpenCV source folder:
 
 ```bash
-cmake -B build -S. \ 
+cmake -B build -S . \ 
     -DCMAKE_BUILD_TYPE=RELEASE \
     -DCMAKE_INSTALL_PREFIX=/usr/local \ -DOPENCV_GENERATE_PKGCONFIG=ON  \
     -DWITH_QT=OFF \
